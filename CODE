@@ -1,0 +1,54 @@
+
+#import pandas as pd 
+#import json
+#tweets = []
+for line in open('/home/rumeysa/Desktop/data1.json','r'):
+    try:
+      tweets.append(json.loads(line))
+    except Exception as e:
+      pass
+#tweet = pd.DataFrame.from_dict(tweets, orient = "columns")
+#tweet
+under_eighteen = tweet[tweet['description'].str.contains("aptal|ask|nefret|sen|haha|salak|sikici|sev")]
+under_eighteen
+# This code will show people between 13 and 18 years old.
+nineteen_to_23 = tweet[tweet['description'].str.contains("universite|mezun|muzik|genc|fenerbahce|galatasaray|besiktas|tip|hukuk")]
+nineteen_to_23
+# This code will show people between 19 and 23 years old.
+twentyfour_to_40 = tweet[tweet['description'].str.contains("sirket|is|evli|cocuk|mudur|gorevli|ogretmen|muhendis|doktor")]
+twentyfour_to_40 
+# This code will show people between 24 and 40 years old.
+fourtyone_to_60 = tweet[tweet['description'].str.contains("aile|cocuk|emekli|cocuk|torun|baba|dede|ankara|istanbul")]
+fourtyone_to_60 
+# This code will show people between 41 and 60 years old.
+from collections import Counter
+C=Counter()
+for el in tweet.description.str.findall("dershane|ders|okul|bir").values:
+    for e in el:
+        C[e]+=1
+C
+selected_words = ["ders", "arkadas" , "dershane", "odev"]
+
+def countWords(tweet, selected_words):
+    words_dict = {}
+    
+    for sentence in tweet.description.values:
+        remove = string.punctuation
+        remove = remove.replace("'", "") # don't remove hyphens
+        pattern = r"[{}]".format(remove) # create the pattern
+
+        test = re.sub(pattern, "", str(sentence)) #compile
+
+        splited_words = str(test).split(' ')
+
+        for word in splited_words:
+            word = word.strip()
+            word = word.lower()
+            if word in selected_words:
+                if word not in words_dict:
+                    words_dict[word] = 1
+                else:
+                    words_dict[word] += 1
+    return words_dict
+
+countWords(tweet, selected_words)
